@@ -1,17 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\WorkOS\Http\Middleware\ValidateSessionWithWorkOS;
+use Inertia\Inertia;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return Inertia::render('welcome');
+})->name('home');
 
-Route::middleware([
-    'auth',
-    ValidateSessionWithWorkOS::class,
-])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('dashboard');
+    })->name('dashboard');
 });
 
 require __DIR__.'/settings.php';
